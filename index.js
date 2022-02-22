@@ -1,31 +1,18 @@
 const debug = require("debug")("app:startup");
-const config = require("config");
-const morgan = require("morgan");
-const helmet = require("helmet");
-const logger = require("./middleware/logger");
 const express = require("express");
 const app = express();
+const mongoose = require("mongoose");
 const products = require("./routes/products");
 const home = require("./routes/home");
 
-app.set("view engine", "pug");
+mongoose
+  .connect("mongodb://localhost/products")
+  .then(() => console.log("Connected to the database..."))
+  .catch((err) => console.error("Failed to connect to the database", err));
 
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-app.use(express.static("public"));
-app.use(helmet());
 app.use("/api/products", products);
 app.use("/", home);
-
-console.log("Application Name: " + config.get("name"));
-console.log("Password: " + config.get("password"));
-
-if (app.get("env") == "development") {
-  app.use(morgan("tiny"));
-  debug("morgan enabled...");
-}
-
-app.use(logger);
 
 //PORT
 const port = process.env.PORT || 3000;
