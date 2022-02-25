@@ -1,7 +1,7 @@
 const { Product, validateProduct } = require("../models/products");
+const { Category, validateCategory } = require("../models/categories");
 const express = require("express");
 const router = express.Router();
-const mongoose = require("mongoose");
 
 router.get("/", async (req, res) => {
   const products = await Product.find().sort({ name: 1 });
@@ -12,9 +12,17 @@ router.post("/", async (req, res) => {
   const { error } = validateProduct(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 
+  const category = await Category.findById(req.body.categoryId);
+  if (!category) return res.status(400).send("Invalid category.");
+
   let product = new Product({
     name: req.body.name,
+    category: {
+      _id: req.body.categoryId,
+      name: category.name,
+    },
     price: req.body.price,
+    stock: req.body.stock,
     date: req.body.date,
     isAvailable: req.body.isAvailable,
   });
@@ -36,9 +44,17 @@ router.put("/:id", async (req, res) => {
   const { error } = validateProduct(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 
+  const category = await Category.findById(req.body.categoryId);
+  if (!category) return res.status(400).send("Invalid category.");
+
   const update = {
     name: req.body.name,
+    category: {
+      _id: req.body.categoryId,
+      name: category.name,
+    },
     price: req.body.price,
+    stock: req.body.stock,
     date: req.body.date,
     isAvailable: req.body.isAvailable,
   };
