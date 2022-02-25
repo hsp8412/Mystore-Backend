@@ -1,6 +1,6 @@
 const Joi = require("joi");
 const mongoose = require("mongoose");
-const { categorySchema } = require("./categories");
+const { categorySchema } = require("./category");
 const productSchema = new mongoose.Schema({
   name: {
     type: String,

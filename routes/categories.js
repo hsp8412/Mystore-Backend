@@ -1,4 +1,4 @@
-const { Category, validateCategory } = require("../models/categories");
+const { Category, validateCategory } = require("../models/category");
 const express = require("express");
 const res = require("express/lib/response");
 const router = express.Router();

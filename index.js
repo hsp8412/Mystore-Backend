@@ -5,6 +5,7 @@ const mongoose = require("mongoose");
 const products = require("./routes/products");
 const home = require("./routes/home");
 const categories = require("./routes/categories");
+const customers = require("./routes/customers");
 
 mongoose
   .connect("mongodb://localhost/products")
@@ -15,6 +16,7 @@ app.use(express.json());
 app.use("/api/products", products);
 app.use("/", home);
 app.use("/api/categories", categories);
+app.use("/api/customers", customers);
 
 //PORT
 const port = process.env.PORT || 3000;
