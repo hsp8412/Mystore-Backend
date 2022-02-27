@@ -16,6 +16,7 @@ router.post("/", async (req, res) => {
     lastName: req.body.lastName,
     phone: req.body.phone,
     email: req.body.email,
+    membership: req.body.membership,
   });
   product = await customer.save();
   res.send(customer);
@@ -34,12 +35,13 @@ router.put("/:id", async (req, res) => {
   const { error } = validateCustomer(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 
-  const update = new Customer({
+  const update = {
     firstName: req.body.firstName,
     lastName: req.body.lastName,
     phone: req.body.phone,
     email: req.body.email,
-  });
+    membership: req.body.membership,
+  };
 
   const customer = await Customer.findByIdAndUpdate(req.params.id, update, {
     new: true,
@@ -51,7 +53,7 @@ router.put("/:id", async (req, res) => {
 });
 
 router.delete("/:id", async (req, res) => {
-  const customer = Customer.findByIdAndDelete(req.params.id);
+  const customer = await Customer.findByIdAndDelete(req.params.id);
 
   if (!customer)
     return res.status(404).send("The customer with the given id is not found");

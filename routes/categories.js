@@ -32,9 +32,9 @@ router.put("/:id", async (req, res) => {
   const { error } = validateCategory(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 
-  const update = new Category({
+  const update = {
     name: req.body.name,
-  });
+  };
 
   const category = await Category.findByIdAndUpdate(req.params.id, update, {
     new: true,
@@ -46,7 +46,7 @@ router.put("/:id", async (req, res) => {
 });
 
 router.delete("/:id", async (req, res) => {
-  const category = Category.findByIdAndDelete(req.params.id);
+  const category = await Category.findByIdAndDelete(req.params.id);
 
   if (!category)
     return res.status(404).send("The category with the given id is not found");
