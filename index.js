@@ -7,6 +7,7 @@ const home = require("./routes/home");
 const categories = require("./routes/categories");
 const customers = require("./routes/customers");
 const orders = require("./routes/orders");
+const users = require("./routes/users");
 
 mongoose
   .connect("mongodb://localhost/products")
@@ -19,6 +20,7 @@ app.use("/", home);
 app.use("/api/categories", categories);
 app.use("/api/customers", customers);
 app.use("/api/orders", orders);
+app.use("/api/users", users);
 
 //PORT
 const port = process.env.PORT || 3000;
