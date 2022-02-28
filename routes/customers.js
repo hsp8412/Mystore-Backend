@@ -2,6 +2,7 @@ const { Customer, validateCustomer } = require("../models/customer");
 const express = require("express");
 const router = express.Router();
 const auth = require("../middleware/auth");
+const admin = require("../middleware/admin");
 
 router.get("/", async (req, res) => {
   const customers = await Customer.find().sort({ registerDate: 1 });
@@ -53,7 +54,7 @@ router.put("/:id", auth, async (req, res) => {
   res.send(customer);
 });
 
-router.delete("/:id", auth, async (req, res) => {
+router.delete("/:id", auth, admin, async (req, res) => {
   const customer = await Customer.findByIdAndDelete(req.params.id);
 
   if (!customer)

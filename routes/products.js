@@ -3,6 +3,7 @@ const { Category, validateCategory } = require("../models/category");
 const express = require("express");
 const router = express.Router();
 const auth = require("../middleware/auth");
+const admin = require("../middleware/admin");
 
 router.get("/", async (req, res) => {
   const products = await Product.find().sort({ name: 1 });
@@ -70,7 +71,7 @@ router.put("/:id", auth, async (req, res) => {
   res.send(product);
 });
 
-router.delete("/:id", auth, async (req, res) => {
+router.delete("/:id", auth, admin, async (req, res) => {
   const product = await Product.findByIdAndDelete(req.params.id);
 
   if (!product)

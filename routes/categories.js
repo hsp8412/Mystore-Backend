@@ -3,6 +3,7 @@ const express = require("express");
 const res = require("express/lib/response");
 const router = express.Router();
 const auth = require("../middleware/auth");
+const admin = require("../middleware/admin");
 
 router.get("/", async (req, res) => {
   const categories = await Category.find().sort({ name: 1 });
@@ -46,7 +47,7 @@ router.put("/:id", auth, async (req, res) => {
   res.send(category);
 });
 
-router.delete("/:id", auth, async (req, res) => {
+router.delete("/:id", auth, admin, async (req, res) => {
   const category = await Category.findByIdAndDelete(req.params.id);
 
   if (!category)

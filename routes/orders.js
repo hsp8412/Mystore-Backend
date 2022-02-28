@@ -5,6 +5,7 @@ const { calculateTotal } = require("../utils/calculateTotal");
 const express = require("express");
 const router = express.Router();
 const auth = require("../middleware/auth");
+const admin = require("../middleware/admin");
 
 router.get("/", async (req, res) => {
   const orders = await Order.find().sort({ total: 1 });
@@ -102,7 +103,7 @@ router.put("/:id", auth, async (req, res) => {
   res.send(order);
 });
 
-router.delete("/:id", auth, async (req, res) => {
+router.delete("/:id", auth, admin, async (req, res) => {
   const order = await Order.findByIdAndDelete(req.params.id);
 
   if (!order)
