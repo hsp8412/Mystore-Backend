@@ -8,6 +8,13 @@ const categories = require("./routes/categories");
 const customers = require("./routes/customers");
 const orders = require("./routes/orders");
 const users = require("./routes/users");
+const auth = require("./routes/auth");
+const config = require("config");
+
+if (!config.get("jwtPrivateKey")) {
+  console.error("FATAL ERROR: jwtPrivateKey is not defined.");
+  process.exit(1);
+}
 
 mongoose
   .connect("mongodb://localhost/products")
@@ -21,6 +28,7 @@ app.use("/api/categories", categories);
 app.use("/api/customers", customers);
 app.use("/api/orders", orders);
 app.use("/api/users", users);
+app.use("/api/auth", auth);
 
 //PORT
 const port = process.env.PORT || 3000;
