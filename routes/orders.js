@@ -4,13 +4,14 @@ const { Customer, validateCustomer } = require("../models/customer");
 const { calculateTotal } = require("../utils/calculateTotal");
 const express = require("express");
 const router = express.Router();
+const auth = require("../middleware/auth");
 
 router.get("/", async (req, res) => {
   const orders = await Order.find().sort({ total: 1 });
   res.send(orders);
 });
 
-router.post("/", async (req, res) => {
+router.post("/", auth, async (req, res) => {
   const { error } = validateOrder(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 
@@ -58,7 +59,7 @@ router.get("/:id", async (req, res) => {
   res.send(order);
 });
 
-router.put("/:id", async (req, res) => {
+router.put("/:id", auth, async (req, res) => {
   const { error } = validateOrder(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 
@@ -101,7 +102,7 @@ router.put("/:id", async (req, res) => {
   res.send(order);
 });
 
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", auth, async (req, res) => {
   const order = await Order.findByIdAndDelete(req.params.id);
 
   if (!order)

@@ -2,13 +2,14 @@ const { Category, validateCategory } = require("../models/category");
 const express = require("express");
 const res = require("express/lib/response");
 const router = express.Router();
+const auth = require("../middleware/auth");
 
 router.get("/", async (req, res) => {
   const categories = await Category.find().sort({ name: 1 });
   res.send(categories);
 });
 
-router.post("/", async (req, res) => {
+router.post("/", auth, async (req, res) => {
   const { error } = validateCategory(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 
@@ -28,7 +29,7 @@ router.get("/:id", async (req, res) => {
   res.send(category);
 });
 
-router.put("/:id", async (req, res) => {
+router.put("/:id", auth, async (req, res) => {
   const { error } = validateCategory(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 
@@ -45,7 +46,7 @@ router.put("/:id", async (req, res) => {
   res.send(category);
 });
 
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", auth, async (req, res) => {
   const category = await Category.findByIdAndDelete(req.params.id);
 
   if (!category)
