@@ -14,10 +14,10 @@ router.post("/", auth, async (req, res) => {
   const { error } = validateCategory(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 
-  let category = new Category({
+  const category = new Category({
     name: req.body.name,
   });
-  product = await category.save();
+  await category.save();
   res.send(category);
 });
 

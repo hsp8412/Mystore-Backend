@@ -35,7 +35,7 @@ router.post("/", auth, async (req, res) => {
     orderProducts.push(orderProduct);
   }
 
-  let order = new Order({
+  const order = new Order({
     customer: {
       _id: customer._id,
       firstName: customer.firstName,
@@ -47,7 +47,7 @@ router.post("/", auth, async (req, res) => {
     total: calculateTotal(orderProducts),
   });
 
-  order = await order.save();
+  await order.save();
   res.send(order);
 });
 

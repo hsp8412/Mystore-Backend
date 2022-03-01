@@ -1,3 +1,7 @@
+require("express-async-errors");
+const error = require("./middleware/error");
+const Joi = require("joi");
+Joi.objectId = require("joi-objectid")(Joi);
 const debug = require("debug")("app:startup");
 const express = require("express");
 const app = express();
@@ -10,6 +14,7 @@ const orders = require("./routes/orders");
 const users = require("./routes/users");
 const auth = require("./routes/auth");
 const config = require("config");
+const { join } = require("lodash");
 
 if (!config.get("jwtPrivateKey")) {
   console.error("FATAL ERROR: jwtPrivateKey is not defined.");
@@ -29,6 +34,7 @@ app.use("/api/customers", customers);
 app.use("/api/orders", orders);
 app.use("/api/users", users);
 app.use("/api/auth", auth);
+app.use(error);
 
 //PORT
 const port = process.env.PORT || 3000;

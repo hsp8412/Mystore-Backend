@@ -17,7 +17,7 @@ router.post("/", auth, async (req, res) => {
   const category = await Category.findById(req.body.categoryId);
   if (!category) return res.status(400).send("Invalid category.");
 
-  let product = new Product({
+  const product = new Product({
     name: req.body.name,
     category: {
       _id: req.body.categoryId,
@@ -29,7 +29,7 @@ router.post("/", auth, async (req, res) => {
     isAvailable: req.body.isAvailable,
   });
 
-  product = await product.save();
+  await product.save();
   res.send(product);
 });
 

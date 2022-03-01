@@ -13,14 +13,14 @@ router.post("/", auth, async (req, res) => {
   const { error } = validateCustomer(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 
-  let customer = new Customer({
+  const customer = new Customer({
     firstName: req.body.firstName,
     lastName: req.body.lastName,
     phone: req.body.phone,
     email: req.body.email,
     membership: req.body.membership,
   });
-  product = await customer.save();
+  await customer.save();
   res.send(customer);
 });
 

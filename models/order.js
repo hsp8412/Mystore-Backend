@@ -58,10 +58,10 @@ const Order = mongoose.model("Order", orderSchema);
 
 function validateOrder(order) {
   const schema = Joi.object({
-    customerId: Joi.required(),
+    customerId: Joi.objectId().required(),
     products: Joi.array()
       .items({
-        productId: Joi.string().required(),
+        productId: Joi.objectId().required(),
         numberToPurchase: Joi.number().min(1).max(999).required(),
       })
       .required(),
